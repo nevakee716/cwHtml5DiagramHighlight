@@ -11,7 +11,8 @@
     this.highlightColour = 'red';
     this.title1 = "Title1";
     this.title2 = diagramViewer.json.properties.type;
-    
+    this.width = 5;
+
     this.highlightShape = {};
     this.highlightConnectorObject = {};
     this.diagramViewer = diagramViewer;
@@ -325,7 +326,7 @@
     if (!cwApi.isUndefinedOrNull(shape) && !cwApi.isUndefinedOrNull(shape.shape) && !cwApi.isUndefinedOrNull(shape.shape.cwObject)) {
       if (!cwApi.isUndefined(this.searchParameters) && this.searchParameters.search === true) {
         if(this.isShapeNeedToBeHighlight(shape)) { 
-          diagramViewer.strokeShape(diagramViewer.ctx,shape,this.highlightColour ,5);
+          diagramViewer.strokeShape(diagramViewer.ctx,shape,this.highlightColour ,this.width);
           return;
         }
       }
