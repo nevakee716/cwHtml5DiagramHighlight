@@ -472,18 +472,19 @@
         property = cwApi.mm.getProperty(item.objectTypeScriptName, propertyScriptname);
         searchValue = this.searchParameters.properties[propertyScriptname];
         itemPropertyValue = item.properties[propertyScriptname];
-
-        if (property.type === 'Lookup' || property.type === 'FixedLookup') {
-          if (searchValue && searchValue !== "0" && item.properties[propertyScriptname + '_id'] && item.properties[propertyScriptname + '_id'].toString() !== searchValue) {
-            return false;
-          }
-        } else if (property.type === 'Boolean') {
-          if (searchValue && searchValue !== "0" && itemPropertyValue.toString().toLowerCase() !== searchValue.toLowerCase()) {
-            return false;
-          }
-        } else {
-          if (searchValue && searchValue !== '' && itemPropertyValue && itemPropertyValue.toString().toLowerCase().indexOf(searchValue.toLowerCase()) === -1) {
-            return false;
+        if(property) {
+          if (property.type === 'Lookup' || property.type === 'FixedLookup') {
+            if (searchValue && searchValue !== "0" && item.properties[propertyScriptname + '_id'] && item.properties[propertyScriptname + '_id'].toString() !== searchValue) {
+              return false;
+            }
+          } else if (property.type === 'Boolean') {
+            if (searchValue && searchValue !== "0" && itemPropertyValue.toString().toLowerCase() !== searchValue.toLowerCase()) {
+              return false;
+            }
+          } else {
+            if (searchValue && searchValue !== '' && itemPropertyValue && itemPropertyValue.toString().toLowerCase().indexOf(searchValue.toLowerCase()) === -1) {
+              return false;
+            }
           }
         }
       }
