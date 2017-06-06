@@ -1,9 +1,11 @@
 | **Name** | **Html5DiagramHighlight** | **Version** | 
 | --- | --- | --- |
-| **Updated by** | Mathias PFAUWADEL | 1.0 | 
+| **Updated by** | Mathias PFAUWADEL | 1.2 | 
 
 ## Patch Notes
 
+* 1.2 : Option for width
+* 1.1 : Allow to change title, and mask some filter
 * 1.0 : 1st version working
 
 ## TBD
@@ -46,8 +48,14 @@ Choose the highlight colour with the value of this.highlightColour
 
 ### Width:
 
-Choose the width with the value of this.Width (in pixel)
+Choose the width of a shape and connectorSet with the value of this.Width (in pixel)
 
+### Titles:
+
+You can change the titles, with variable this.title1 and this.title2.
+If you want to display the template of the diagram, put this.title2 = diagramViewer.json.properties.type;
+
+<img src="https://raw.githubusercontent.com/nevakee716/cwHtml5DiagramHighlight/master/screen/4.jpg" alt="Drawing" style="width: 95%;"/>
 
 ### Masking some menu
 
