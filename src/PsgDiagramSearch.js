@@ -9,10 +9,34 @@
     this.globalAlpha = 0.60;
     this.connectorObject = ["CONNECTORSET"];
     this.highlightColour = 'red';
+    this.title1 = "Title1";
+    this.title2 = diagramViewer.json.properties.type;
     
     this.highlightShape = {};
     this.highlightConnectorObject = {};
     this.diagramViewer = diagramViewer;
+    this.template = this.diagramViewer.json.properties.type;
+    this.view = cwAPI.getCurrentView().cwView;
+    if(cwApi.customLibs.PsgDiagramSearchConfig) {
+      if(cwApi.customLibs.PsgDiagramSearchConfig.hasOwnProperty(this.view)) {
+        if(cwApi.customLibs.PsgDiagramSearchConfig[this.view ].hasOwnProperty(this.diagramViewer.json.properties.type)) {
+          this.config = cwApi.customLibs.PsgDiagramSearchConfig[this.view][this.diagramViewer.json.properties.type]; 
+        } else {
+          this.config = null;
+        }
+      } else {
+        if(cwApi.customLibs.PsgDiagramSearchConfig.default.hasOwnProperty(this.diagramViewer.json.properties.type)) {
+          this.config = cwApi.customLibs.PsgDiagramSearchConfig.default[this.diagramViewer.json.properties.type]; 
+        } else {
+          this.config = null;
+        }
+      }
+    }
+    else {
+      this.config = null;
+    }
+
+
     if (!diagramViewer.isImageDiagram()) {
       this.setupDiagramOptions(diagramViewer);
       this.createSearchButton(diagramViewer);
@@ -125,7 +149,7 @@
     o = [];
     loadedEntries = [];
     o.push('<div class="cw-diagram-search-container">');
-    o.push('<h3>', $.i18n.prop('DiagramSearchSearchSelectObjectType'), '</h3>');
+    o.push('<h3>', this.title2, '</h3>');
     o.push('<div class="cw-diagram-search">');
 
     o.push('Objet Type : <select id="', diagramViewer.id, '-options-select">');
@@ -133,11 +157,13 @@
     for (paletteEntry in diagramViewer.json.diagram.paletteEntries) {
       if (diagramViewer.json.diagram.paletteEntries.hasOwnProperty(paletteEntry)) {
         objScriptname = diagramViewer.json.diagram.paletteEntries[paletteEntry].PaletteObjectTypeScriptName.toLowerCase();
-        objType = cwApi.mm.getObjectType(objScriptname);
-        if (!cwApi.isUndefined(objType)) {
-          if (loadedEntries.indexOf(objScriptname) === -1) {
-            o.push('<option value="', objScriptname, '">', objType.name, '</option>');
-            loadedEntries.push(objScriptname);
+        if(this.config && this.config.hasOwnProperty(objScriptname) || this.config === null) {
+          objType = cwApi.mm.getObjectType(objScriptname);
+          if (!cwApi.isUndefined(objType)) {
+            if (loadedEntries.indexOf(objScriptname) === -1) {
+              o.push('<option value="', objScriptname, '">', objType.name, '</option>');
+              loadedEntries.push(objScriptname);
+            }
           }
         }
       }
@@ -146,7 +172,7 @@
     o.push('<ul class="cw-search-zone-properties"></ul></div>');
     o.push('</div>');
     $div = $(o.join(''));
-    cwApi.CwPopout.showPopout($.i18n.prop('DiagramSearchSearchIn') + ' "' + diagramViewer.json.label + '"');
+    cwApi.CwPopout.showPopout(this.title1);
     cwApi.CwPopout.setContent($div);
     this.setupOptionEvents(diagramViewer);
     cwApi.CwPopout.onClose(function() {
@@ -229,7 +255,9 @@
           for (i = 0; i < properties.length; i += 1) {
             property = cwApi.mm.getProperty(selectedOt, properties[i]);
             if (!cwApi.isUndefined(property)) {
-              displayPropertyField(output, property);
+              if(that.config === null || that.config && that.config[selectedOt] && that.config[selectedOt].indexOf(property.scriptName) !== -1) {
+                displayPropertyField(output, property);                
+              }
             }
           }  
         }
@@ -239,7 +267,9 @@
         		if (associations.hasOwnProperty(associationScriptName)){
         			association = cwAPI.mm.getMetaModel().AssociationScriptNames[associationScriptName];
         			if (!cwApi.isUndefined(association)){
-        				displayAssociationField(output, association);
+                if(that.config === null || that.config && that.config[selectedOt] && that.config[selectedOt].indexOf(association.ScriptName) !== -1) {
+        				  displayAssociationField(output, association);
+                }
         			}
         		}
         	}
@@ -443,15 +473,15 @@
         itemPropertyValue = item.properties[propertyScriptname];
 
         if (property.type === 'Lookup' || property.type === 'FixedLookup') {
-          if (searchValue !== "0" && item.properties[propertyScriptname + '_id'] && item.properties[propertyScriptname + '_id'].toString() !== searchValue) {
+          if (searchValue && searchValue !== "0" && item.properties[propertyScriptname + '_id'] && item.properties[propertyScriptname + '_id'].toString() !== searchValue) {
             return false;
           }
         } else if (property.type === 'Boolean') {
-          if (searchValue !== "0" && itemPropertyValue.toString().toLowerCase() !== searchValue.toLowerCase()) {
+          if (searchValue && searchValue !== "0" && itemPropertyValue.toString().toLowerCase() !== searchValue.toLowerCase()) {
             return false;
           }
         } else {
-          if (searchValue !== '' && itemPropertyValue.toString().toLowerCase().indexOf(searchValue.toLowerCase()) === -1) {
+          if (searchValue && searchValue !== '' && itemPropertyValue && itemPropertyValue.toString().toLowerCase().indexOf(searchValue.toLowerCase()) === -1) {
             return false;
           }
         }
