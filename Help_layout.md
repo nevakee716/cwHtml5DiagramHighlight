@@ -82,6 +82,8 @@ You can mask some filter, by default all filter are displayed. If you want to on
 The ScriptName of Object Property need to be in lowerCase  
 The ScriptName of the association need to be in UpperCase
 
+## Image
+You can save your diagram once filtered by right clicking on the diagram, and click on save the image. 
 
 ## Cohabitation with other specific
 

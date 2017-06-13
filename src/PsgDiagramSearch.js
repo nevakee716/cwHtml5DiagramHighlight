@@ -47,7 +47,6 @@
   PsgDiagramSearch.prototype.setupDiagramOptions = function(diagramViewer) {
     var i, entry, objectTypeScriptName, propertyScriptname, paletteEntry, associationRegionEntry, associationRegion;
     this.diagramOptions = {};
-
     for (paletteEntry in diagramViewer.json.diagram.paletteEntries) {
       if (diagramViewer.json.diagram.paletteEntries.hasOwnProperty(paletteEntry)) {
         entry = diagramViewer.json.diagram.paletteEntries[paletteEntry];
@@ -335,7 +334,7 @@
   };
 
   PsgDiagramSearch.prototype.isShapeNeedToBeHighlight = function(shape) {
-    if(this.highlightConnectorObject.hasOwnProperty(shape.shape.Id)) { // Check if it's a connectorSet
+    if(shape.hasOwnProperty("shape") && this.highlightConnectorObject.hasOwnProperty(shape.shape.Id)) { // Check if it's a connectorSet
       if(this.highlightConnectorObject[shape.shape.Id].before && this.highlightConnectorObject[shape.shape.Id].after) {  // Check if it should be highlight
         this.highlightShape[shape.shape.Id] = 2;
         this.highlightConnectorObject[shape.shape.Id].before = false;  
@@ -343,7 +342,7 @@
         return true;
       }
       // if it's connector init it
-    } else if(this.connectorObject.indexOf(shape.shape.cwObject.objectTypeScriptName.toUpperCase()) !== -1) {
+    } else if(shape.hasOwnProperty("shape") && this.connectorObject.indexOf(shape.shape.cwObject.objectTypeScriptName.toUpperCase()) !== -1) {
       this.highlightConnectorObject[shape.shape.Id] = {};
       this.highlightConnectorObject[shape.shape.Id].before = false;  
       this.highlightConnectorObject[shape.shape.Id].after = false;                    
@@ -383,19 +382,19 @@
   PsgDiagramSearch.prototype.isJoinerNeedToBeHighlight = function(joiner) {
     var toto = "ae";
     // si le from est un connectorSet
-    if(this.highlightConnectorObject.hasOwnProperty(joiner.joiner.FromSeq)) {
+    if(joiner.hasOwnProperty(joiner) && this.highlightConnectorObject.hasOwnProperty(joiner.joiner.FromSeq)) {
       if(this.highlightShape.hasOwnProperty(joiner.joiner.ToSeq) && this.highlightShape[joiner.joiner.ToSeq] >= 2) {
         this.highlightConnectorObject[joiner.joiner.FromSeq].before = true;
       }
     }
     // si le to est un connectorSet
-    if(this.highlightConnectorObject.hasOwnProperty(joiner.joiner.ToSeq)) {
+    if(joiner.hasOwnProperty(joiner) && this.highlightConnectorObject.hasOwnProperty(joiner.joiner.ToSeq)) {
       if(this.highlightShape.hasOwnProperty(joiner.joiner.FromSeq) && this.highlightShape[joiner.joiner.FromSeq] >= 2) {
         this.highlightConnectorObject[joiner.joiner.ToSeq].after = true;
       }
     }
 
-    if(this.highlightShape.hasOwnProperty(joiner.joiner.FromSeq) && this.highlightShape[joiner.joiner.FromSeq] >= 2 && this.highlightShape.hasOwnProperty(joiner.joiner.ToSeq) && this.highlightShape[joiner.joiner.ToSeq] >= 2) {
+    if(joiner.hasOwnProperty(joiner) && this.highlightShape.hasOwnProperty(joiner.joiner.FromSeq) && this.highlightShape[joiner.joiner.FromSeq] >= 2 && this.highlightShape.hasOwnProperty(joiner.joiner.ToSeq) && this.highlightShape[joiner.joiner.ToSeq] >= 2) {
       return true;
     } else {
       return false;

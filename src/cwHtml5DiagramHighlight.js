@@ -37,7 +37,7 @@
     }
   };
 
-  PsgDiagramSearchManager.prototype.resetGlobalAlpha = function(diagramViewer) {
+  PsgDiagramSearchManager.prototype.resetGlobalAlpha = function(diagramViewer,shape) {
     if(this.PsgDiagramSearch.hasOwnProperty(diagramViewer.id)) {
       this.PsgDiagramSearch[diagramViewer.id].resetGlobalAlpha(diagramViewer,shape);  
     }
