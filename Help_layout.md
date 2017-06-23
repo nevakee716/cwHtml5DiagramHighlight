@@ -66,14 +66,15 @@ You can mask some filter, by default all filter are displayed. If you want to on
   
 ```
   var PsgDiagramSearchConfig = {
-    {view}: {
+    {EvolveView}: {
       {template} : {
-        {onjectType} : [{ScriptName of Object or Scriptname of the association}]
+        {objectType1} : [{ScriptName of Object Property or Scriptname of the association}],
+        {objectType2} : [{ScriptName of Object Property or Scriptname of the association}]
       }
     },
     default : { 
       {template} : {
-        {onjectType} : [{ScriptName of Object Property or Scriptname of the association}]
+        {objectType} : [{ScriptName of Object Property or Scriptname of the association}]
       }
     }
   };   
