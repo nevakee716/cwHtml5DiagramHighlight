@@ -7,7 +7,7 @@
 
   PsgDiagramSearch = function(diagramViewer) {
     this.globalAlpha = 0.60;
-    this.connectorObject = ["CONNECTORSET"];
+    this.connectorObject = ["CONNECTORSET","EVENTRESULT"];
     this.highlightColour = 'red';
     this.title1 = "Title1";
     this.title2 = diagramViewer.json.properties.type;
@@ -186,7 +186,7 @@
     displayLookup = function(output, property, lookups) {
       var i;
       output.push(property.name, ' : <select id="', diagramViewer.id, '-options-property-', property.scriptName, '" data-property-scriptname="', property.scriptName, '" >');
-      output.push('<option value="0"> </option>');
+      output.push('<option value="-1"> </option>');
       for (i = 0; i < lookups.length; i += 1) {
         output.push('<option value="', lookups[i].id, '">', lookups[i].name, '</option>');
       }
@@ -382,19 +382,27 @@
   PsgDiagramSearch.prototype.isJoinerNeedToBeHighlight = function(joiner) {
     var toto = "ae";
     // si le from est un connectorSet
-    if(joiner.hasOwnProperty(joiner) && this.highlightConnectorObject.hasOwnProperty(joiner.joiner.FromSeq)) {
+    if(joiner.joiner && this.highlightConnectorObject.hasOwnProperty(joiner.joiner.FromSeq)) {
       if(this.highlightShape.hasOwnProperty(joiner.joiner.ToSeq) && this.highlightShape[joiner.joiner.ToSeq] >= 2) {
-        this.highlightConnectorObject[joiner.joiner.FromSeq].before = true;
+        if(joiner.paletteEntry && joiner.paletteEntry.JoinerFromEndSymbol === 0) {
+          this.highlightConnectorObject[joiner.joiner.FromSeq].before = true;     
+        } else {
+          this.highlightConnectorObject[joiner.joiner.FromSeq].after = true; 
+        }   
       }
     }
     // si le to est un connectorSet
-    if(joiner.hasOwnProperty(joiner) && this.highlightConnectorObject.hasOwnProperty(joiner.joiner.ToSeq)) {
+    if(joiner.joiner && this.highlightConnectorObject.hasOwnProperty(joiner.joiner.ToSeq)) {
       if(this.highlightShape.hasOwnProperty(joiner.joiner.FromSeq) && this.highlightShape[joiner.joiner.FromSeq] >= 2) {
-        this.highlightConnectorObject[joiner.joiner.ToSeq].after = true;
+        if(joiner.paletteEntry && joiner.paletteEntry.JoinerFromEndSymbol === 0) {
+          this.highlightConnectorObject[joiner.joiner.ToSeq].after = true;     
+        } else {
+          this.highlightConnectorObject[joiner.joiner.ToSeq].before = true; 
+        }   
       }
     }
 
-    if(joiner.hasOwnProperty(joiner) && this.highlightShape.hasOwnProperty(joiner.joiner.FromSeq) && this.highlightShape[joiner.joiner.FromSeq] >= 2 && this.highlightShape.hasOwnProperty(joiner.joiner.ToSeq) && this.highlightShape[joiner.joiner.ToSeq] >= 2) {
+    if(joiner.joiner && this.highlightShape.hasOwnProperty(joiner.joiner.FromSeq) && this.highlightShape[joiner.joiner.FromSeq] >= 2 && this.highlightShape.hasOwnProperty(joiner.joiner.ToSeq) && this.highlightShape[joiner.joiner.ToSeq] >= 2) {
       return true;
     } else {
       return false;
@@ -473,15 +481,15 @@
         itemPropertyValue = item.properties[propertyScriptname];
         if(property) {
           if (property.type === 'Lookup' || property.type === 'FixedLookup') {
-            if (searchValue && searchValue !== "0" && item.properties[propertyScriptname + '_id'] && item.properties[propertyScriptname + '_id'].toString() !== searchValue) {
+            if (searchValue !== "-1" && ( item.properties[propertyScriptname + '_id'] === undefined ||(item.properties[propertyScriptname + '_id'].toString() !== searchValue))) {
               return false;
             }
           } else if (property.type === 'Boolean') {
-            if (searchValue && searchValue !== "0" && itemPropertyValue.toString().toLowerCase() !== searchValue.toLowerCase()) {
+            if (searchValue !== "0" && itemPropertyValue.toString().toLowerCase() !== searchValue.toLowerCase()) {
               return false;
             }
           } else {
-            if (searchValue && searchValue !== '' && itemPropertyValue && itemPropertyValue.toString().toLowerCase().indexOf(searchValue.toLowerCase()) === -1) {
+            if (searchValue !== '' && itemPropertyValue && itemPropertyValue.toString().toLowerCase().indexOf(searchValue.toLowerCase()) === -1) {
               return false;
             }
           }
