@@ -20,7 +20,7 @@
     this.view = cwAPI.getCurrentView().cwView;
     if(cwApi.customLibs.PsgDiagramSearchConfig) {
       if(cwApi.customLibs.PsgDiagramSearchConfig.hasOwnProperty(this.view)) {
-        if(cwApi.customLibs.PsgDiagramSearchConfig[this.view ].hasOwnProperty(this.diagramViewer.json.properties.type)) {
+        if(cwApi.customLibs.PsgDiagramSearchConfig[this.view].hasOwnProperty(this.diagramViewer.json.properties.type)) {
           this.config = cwApi.customLibs.PsgDiagramSearchConfig[this.view][this.diagramViewer.json.properties.type]; 
         } else {
           this.config = null;
@@ -481,15 +481,15 @@
         itemPropertyValue = item.properties[propertyScriptname];
         if(property) {
           if (property.type === 'Lookup' || property.type === 'FixedLookup') {
-            if (searchValue !== "-1" && ( item.properties[propertyScriptname + '_id'] === undefined ||(item.properties[propertyScriptname + '_id'].toString() !== searchValue))) {
+            if (searchValue !== undefined && searchValue !== "-1" && ( item.properties[propertyScriptname + '_id'] === undefined ||(item.properties[propertyScriptname + '_id'].toString() !== searchValue))) {
               return false;
             }
           } else if (property.type === 'Boolean') {
-            if (searchValue !== "0" && itemPropertyValue.toString().toLowerCase() !== searchValue.toLowerCase()) {
+            if (searchValue !== undefined && searchValue !== "0" && itemPropertyValue.toString().toLowerCase() !== searchValue.toLowerCase()) {
               return false;
             }
           } else {
-            if (searchValue !== '' && itemPropertyValue && itemPropertyValue.toString().toLowerCase().indexOf(searchValue.toLowerCase()) === -1) {
+            if (searchValue !== undefined && searchValue !== '' && itemPropertyValue && itemPropertyValue.toString().toLowerCase().indexOf(searchValue.toLowerCase()) === -1) {
               return false;
             }
           }
