@@ -13,6 +13,8 @@
     this.title2 = diagramViewer.json.properties.type;
     this.width = 5;
 
+
+    this.weakArrowSymbol = [0,3];
     this.highlightShape = {};
     this.highlightConnectorObject = {};
     this.diagramViewer = diagramViewer;
@@ -384,7 +386,7 @@
     // si le from est un connectorSet
     if(joiner.joiner && this.highlightConnectorObject.hasOwnProperty(joiner.joiner.FromSeq)) {
       if(this.highlightShape.hasOwnProperty(joiner.joiner.ToSeq) && this.highlightShape[joiner.joiner.ToSeq] >= 2) {
-        if(joiner.paletteEntry && joiner.paletteEntry.JoinerFromEndSymbol === 0) {
+        if(joiner.paletteEntry &&  this.weakArrowSymbol.indexOf(joiner.paletteEntry.JoinerFromEndSymbol) !== -1) {
           this.highlightConnectorObject[joiner.joiner.FromSeq].before = true;     
         } else {
           this.highlightConnectorObject[joiner.joiner.FromSeq].after = true; 
@@ -394,7 +396,7 @@
     // si le to est un connectorSet
     if(joiner.joiner && this.highlightConnectorObject.hasOwnProperty(joiner.joiner.ToSeq)) {
       if(this.highlightShape.hasOwnProperty(joiner.joiner.FromSeq) && this.highlightShape[joiner.joiner.FromSeq] >= 2) {
-        if(joiner.paletteEntry && joiner.paletteEntry.JoinerFromEndSymbol === 0) {
+        if(joiner.paletteEntry &&  this.weakArrowSymbol.indexOf(joiner.paletteEntry.JoinerFromEndSymbol) !== -1) {
           this.highlightConnectorObject[joiner.joiner.ToSeq].after = true;     
         } else {
           this.highlightConnectorObject[joiner.joiner.ToSeq].before = true; 

@@ -1,9 +1,10 @@
 | **Name** | **Html5DiagramHighlight** | **Version** | 
 | --- | --- | --- |
-| **Updated by** | Mathias PFAUWADEL | 1.2 | 
+| **Updated by** | Mathias PFAUWADEL | 1.3 | 
 
 ## Patch Notes
 
+* 1.3 : Correct wrong arrow association direction
 * 1.2 : Option for width
 * 1.1 : Allow to change title, and mask some filter
 * 1.0 : 1st version working
