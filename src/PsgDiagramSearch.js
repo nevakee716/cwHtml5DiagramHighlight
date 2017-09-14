@@ -12,7 +12,8 @@
     this.title1 = "Title1";
     this.title2 = diagramViewer.json.properties.type;
     this.width = 5;
-
+    this.falseString = "False";
+    this.trueString = "True";
 
     this.weakArrowSymbol = [0,3];
     this.highlightShape = {};
@@ -223,10 +224,10 @@
         case 'Boolean':
           lookups = [{
             'id': 'false',
-            'name': $.i18n.prop('DiagramSearchFalseValue')
+            'name': that.falseString
           }, {
             'id': 'true',
-            'name': $.i18n.prop('DiagramSearchTrueValue')
+            'name': that.trueString
           }];
           displayLookup(o, property, lookups);
           break;
@@ -487,7 +488,7 @@
               return false;
             }
           } else if (property.type === 'Boolean') {
-            if (searchValue !== undefined && searchValue !== "0" && itemPropertyValue.toString().toLowerCase() !== searchValue.toLowerCase()) {
+            if (searchValue !== undefined && searchValue !== "0" && searchValue !== "-1" && (itemPropertyValue === undefined || itemPropertyValue.toString().toLowerCase() != searchValue.toLowerCase())) {
               return false;
             }
           } else {
