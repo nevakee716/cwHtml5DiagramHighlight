@@ -1,6 +1,6 @@
 {
   "name": "Html5DiagramHighlight",
-  "version": "1.3.3",
+  "version": "1.3.4",
   "description": "Allow you to hightlight object on diagram depending on their category or association region",
   "main": "src/Html5DiagramHighlight.js",
   "scripts": {
