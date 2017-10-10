@@ -20,7 +20,9 @@
     this.highlightConnectorObject = {};
     this.diagramViewer = diagramViewer;
     this.template = this.diagramViewer.json.properties.type;
-    this.view = cwAPI.getCurrentView().cwView;
+
+    var v = cwAPI.getCurrentView();
+    if(v) this.view = v.cwView;
     if(cwApi.customLibs.PsgDiagramSearchConfig) {
       if(cwApi.customLibs.PsgDiagramSearchConfig.hasOwnProperty(this.view)) {
         if(cwApi.customLibs.PsgDiagramSearchConfig[this.view].hasOwnProperty(this.diagramViewer.json.properties.type)) {
