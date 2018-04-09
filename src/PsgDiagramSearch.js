@@ -8,7 +8,7 @@
   PsgDiagramSearch = function(diagramViewer) {
     this.globalAlpha = 1;
     this.connectorObject = ["CONNECTORSET","EVENTRESULT"];
-    this.highlightColour = 'red';
+    this.highlightColor = 'red';
     this.title1 = "Search";
     this.title2 = diagramViewer.json.properties.type;
     this.width = 5;
@@ -233,6 +233,8 @@
           }];
           displayLookup(o, property, lookups);
           break;
+        case 'Date':
+          break;
         case 'Lookup':
         case 'FixedLookup':
           lookups = property.lookups;
@@ -279,8 +281,26 @@
         		}
         	}
         }
+        //  date
+        if(that.config && that.config[selectedOt + "_date"]) {
+          var step;
+
+          output.push('<li class="cw-diagram-options-li" >');
+          output.push('Date : <input id="', diagramViewer.id,'_',selectedOt,'_date" type="date">');
+          output.push('</li>');
+          for (var s in that.config[selectedOt + "_date"]) {
+            if(that.config[selectedOt + "_date"].hasOwnProperty(s)) {
+              step = that.config[selectedOt + "_date"][s];
+              output.push('<div><i class="fa fa-square-o" style="color:',step.color,'" aria-hidden="true"></i>',' : ',step.name,'</div>');
+            }
+          }
+          
+        }
+
+
         $('ul.cw-search-zone-properties').append(output.join(''));
         that.setupSearchParameters(true);
+
       } else {
         that.setupSearchParameters(false);
       }
@@ -330,7 +350,7 @@
     if (!cwApi.isUndefinedOrNull(shape) && !cwApi.isUndefinedOrNull(shape.shape) && !cwApi.isUndefinedOrNull(shape.shape.cwObject)) {
       if (!cwApi.isUndefined(this.searchParameters) && this.searchParameters.search === true) {
         if(this.isShapeNeedToBeHighlight(shape)) { 
-          diagramViewer.strokeShape(diagramViewer.ctx,shape,this.highlightColour ,this.width);
+          diagramViewer.strokeShape(diagramViewer.ctx,shape,this.highlightColor ,this.width);
           return;
         }
       }
@@ -363,7 +383,7 @@
     if (!cwApi.isUndefinedOrNull(joiner) && !cwApi.isUndefinedOrNull(joiner.joiner) && this.isJoinerNeedToBeHighlight(joiner)) {
       var style = {};
       var ctx = diagramViewer.ctx;
-      style.StrokeColor = this.highlightColour ;
+      style.StrokeColor = this.highlightColor ;
       style.StrokePattern = "SOLID";
 
       joiner.setJoinerStyle(ctx,style);
@@ -467,6 +487,8 @@
     }
     this.searchParameters = params;
     this.searchParameters.objectTypeScriptName = selectedOt;
+    this.searchParameters.date = $("#" + this.diagramViewer.id + '_' + selectedOt + '_date').val();
+
     if (selectedOt !== "0") {
       this.searchParameters.search = canSearch;
     } else {
@@ -475,7 +497,7 @@
   };
 
   PsgDiagramSearch.prototype.matchSearchCriteria = function(item) {
-    var itemPropertyValue, searchValue, property, propertyScriptname, at, associatedItem, atScriptName, b = true, i;
+    var itemPropertyValue, searchValue, property, propertyScriptname, at, associatedItem, atScriptName, step, b = true, i;
     if (item.objectTypeScriptName !== this.searchParameters.objectTypeScriptName) {
       return false;
     }
@@ -519,7 +541,52 @@
     		}
     	}
     }
-    return b;
+    if(b === false) return b;
+
+    if(this.config && this.config[this.searchParameters.objectTypeScriptName  + "_date"]) {
+      for(var s in this.config[this.searchParameters.objectTypeScriptName  + "_date"]) {
+        if(this.config[this.searchParameters.objectTypeScriptName  + "_date"].hasOwnProperty(s)) {
+          step = this.config[this.searchParameters.objectTypeScriptName  + "_date"][s];
+          if(this.isObjectInStep(item.properties,step,this.searchParameters.date)) {
+            return true;
+          }
+        }
+      }
+    }
+    return true;
+    
+  };
+
+  PsgDiagramSearch.prototype.isObjectInStep = function(properties,step,configDateString) {
+    var startDate,endDate,configDate;
+    if(step.start === undefined) {
+      this.highlightColor = step.color;
+      return true;
+    }
+    else if(properties && properties[step.start.toLowerCase()] && properties[step.end.toLowerCase()]) {
+      if(Date.parse(properties[step.start.toLowerCase()]) < 0) {
+        return false;
+      }
+      startDate = new Date(properties[step.start.toLowerCase()]);
+
+      if(Date.parse(properties[step.end.toLowerCase()]) < 0) {
+        endDate = new Date("01/01/9999");
+      } else {
+        endDate = new Date(properties[step.end.toLowerCase()]);
+      }
+
+
+      configDate = new Date(configDateString); 
+
+
+
+
+      if(configDate.getTime() > startDate.getTime() && configDate.getTime() < endDate.getTime()) {
+        this.highlightColor = step.color;
+        return true;
+      }
+    }
+    return false;
   };
 
   PsgDiagramSearch.prototype.register = function() {
