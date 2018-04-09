@@ -6,10 +6,10 @@
   var PsgDiagramSearch;
 
   PsgDiagramSearch = function(diagramViewer) {
-    this.globalAlpha = 0.60;
+    this.globalAlpha = 1;
     this.connectorObject = ["CONNECTORSET","EVENTRESULT"];
     this.highlightColour = 'red';
-    this.title1 = "Title1";
+    this.title1 = "Search";
     this.title2 = diagramViewer.json.properties.type;
     this.width = 5;
     this.falseString = "False";
