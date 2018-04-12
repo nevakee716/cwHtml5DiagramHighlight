@@ -6,32 +6,32 @@
   var PsgDiagramSearchConfig = {
     index_portefeuilles_applicatifs : {
     	"Vue B0 Fonctionnel - Géréral" : { 
-    		application : ["name","type"],
-        	application_date : {
-        		"step1": {
-            		"name": "Evaluation",
-            		"start": "DATEDEDÉBUTDÉVALUATION",
-            		"end": "DATEDEMISEENPRODUCTION",
-            		"color": "blue"
-        		},
-        		"step2": {
-            		"name": "Production",
-            		"start": "DATEDEMISEENPRODUCTION",
-            		"end": "DATEDEDÉBUTDEDÉCOMMISSIONNEMENT",
-            		"color": "green"
-        		},
-        		"step3": {
-            		"name": "Décommissionnement",
-            		"start": "DATEDEDÉBUTDEDÉCOMMISSIONNEMENT",
-            		"end": "DATEDEFINDEDÉCOMMISSIONNEMENT",
-            		"color": "orange"
-        		},
-        		"out": {
-            		"name": "Out",
-            		"color": "red"
-        		}
-        	}
-        }
+    		application : ["name","type","DATEDEDÉBUTDÉVALUATION","DATEDEMISEENPRODUCTION","DATEDEDÉBUTDEDÉCOMMISSIONNEMENT","DATEDEFINDEDÉCOMMISSIONNEMENT","criticité","enterprisestandard"],
+      	application_date : {
+      		"step1": {
+          		"name": "Evaluation",
+          		"start": "DATEDEDÉBUTDÉVALUATION",
+          		"end": "DATEDEMISEENPRODUCTION",
+          		"color": "blue"
+      		},
+      		"step2": {
+          		"name": "Production",
+          		"start": "DATEDEMISEENPRODUCTION",
+          		"end": "DATEDEDÉBUTDEDÉCOMMISSIONNEMENT",
+          		"color": "green"
+      		},
+      		"step3": {
+          		"name": "Décommissionnement",
+          		"start": "DATEDEDÉBUTDEDÉCOMMISSIONNEMENT",
+          		"end": "DATEDEFINDEDÉCOMMISSIONNEMENT",
+          		"color": "orange"
+      		},
+      		"out": {
+          		"name": "Out",
+          		"color": "red"
+      		}
+      	}
+      }
     },
     default : {
       "PA - Sub Process Workflow" : {
