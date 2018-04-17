@@ -6,7 +6,7 @@
   var PsgDiagramSearchConfig = {
     index_portefeuilles_applicatifs : {
     	"Vue B0 Fonctionnel - Géréral" : { 
-    		application : ["name","type","DATEDEDÉBUTDÉVALUATION","DATEDEMISEENPRODUCTION","DATEDEDÉBUTDEDÉCOMMISSIONNEMENT","DATEDEFINDEDÉCOMMISSIONNEMENT","criticité","enterprisestandard"],
+    		application : ["name","type","DATEDEDÉBUTDÉVALUATION","DATEDEMISEENPRODUCTION","DATEDEDÉBUTDEDÉCOMMISSIONNEMENT","DATEDEFINDEDÉCOMMISSIONNEMENT","criticité","enterprisestandard","critiquepourréglementationsrgpd","contientdesdonnéespersonnelles"],
       	application_date : {
       		"step1": {
           		"name": "Evaluation",
