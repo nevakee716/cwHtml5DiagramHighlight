@@ -157,7 +157,7 @@
     o.push('<h3>', this.title2, '</h3>');
     o.push('<div class="cw-diagram-search">');
 
-    o.push('Objet Type : <select id="', diagramViewer.id, '-options-select">');
+    o.push('<div class="cw-diagram-search-objectType"><span class="diagramSearchHeader">Objet Type : </span> <select class="HTML5searchFiler" id="', diagramViewer.id, '-options-select">');
     o.push('<option value="0"> </option>');
     for (paletteEntry in diagramViewer.json.diagram.paletteEntries) {
       if (diagramViewer.json.diagram.paletteEntries.hasOwnProperty(paletteEntry)) {
@@ -173,7 +173,7 @@
         }
       }
     }
-    o.push('</select>');
+    o.push('</select></div>');
     o.push('<ul class="cw-search-zone-properties"></ul></div>');
     o.push('</div>');
     $div = $(o.join(''));
@@ -190,7 +190,7 @@
       displayPropertyField, displayLookup, displayAssociationField;
     displayLookup = function(output, property, lookups) {
       var i;
-      output.push(property.name, ' : <select id="', diagramViewer.id, '-options-property-', property.scriptName, '" data-property-scriptname="', property.scriptName, '" >');
+      output.push('<span class="diagramSearchHeader">',property.name,' : </span>', '<select id="', diagramViewer.id, '-options-property-', property.scriptName, '" data-property-scriptname="', property.scriptName, '" >');
       output.push('<option value="-1"> </option>');
       for (i = 0; i < lookups.length; i += 1) {
         output.push('<option value="', lookups[i].id, '">', lookups[i].name, '</option>');
@@ -199,7 +199,7 @@
     };
     displayAssociationField = function(output, association){
     	var display = false, i, o = [], alreadyDisplayedItemIds = [];
-    	o.push(association.DisplayName, ' : <select id="', diagramViewer.id, '-options-association-', association.ScriptName, '" data-association-scriptname="', association.ScriptName, '">');
+    	o.push('<span class="diagramSearchHeader">',association.DisplayName,' : </span>', '<select id="', diagramViewer.id, '-options-association-', association.ScriptName, '" data-association-scriptname="', association.ScriptName, '">');
     	o.push('<option value="0"> </option>');
     	if(that.itemsByScriptname.hasOwnProperty(association.ScriptName)){
 	    	for(i = 0; i < that.itemsByScriptname[association.ScriptName].length; i += 1){
@@ -241,7 +241,7 @@
           displayLookup(o, property, lookups);
           break;
         default:
-          o.push(property.name, ' : <input type="text" id="', diagramViewer.id, '-options-property-', property.scriptName, '" data-property-scriptname="', property.scriptName, '" />');
+          o.push('<span class="diagramSearchHeader">',property.name,' : </span><input type="text" class="k-input k-textbox" id="', diagramViewer.id, '-options-property-', property.scriptName, '" data-property-scriptname="', property.scriptName, '" />');
           break;
       }
       if (display) {
