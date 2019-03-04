@@ -16,8 +16,16 @@
 .cw-diagram-options-li input,.cw-diagram-options-li select,.HTML5searchFiler{
 	width: 55%;
 }
+.cw-diagram-options-li input[type=date] {
+	margin-left: 10px;
+}
 
-.cw-diagram-options-li select,.HTML5searchFiler{
+.searchFilerDateLegend {
+	padding-left: 10px;
+	margin-left: 45%;
+}
+
+.cw-diagram-options-li select,.cw-diagram-options-li input[type=date],.HTML5searchFiler{
 	display: block;
     padding: 5px;
 	height: 100%;

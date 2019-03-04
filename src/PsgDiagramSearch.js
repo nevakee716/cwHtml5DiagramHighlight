@@ -288,7 +288,7 @@
           output.push('<li class="cw-diagram-options-li" >');
           output.push('<span class="diagramSearchHeader">Date : </span><input id="', diagramViewer.id,'_',selectedOt,'_date" type="date">');
           output.push('</li>');
-          output.push('<li class="" >');
+          output.push('<li class="searchFilerDateLegend" >');
           for (var s in that.config[selectedOt + "_date"]) {
             if(that.config[selectedOt + "_date"].hasOwnProperty(s)) {
               step = that.config[selectedOt + "_date"][s];
