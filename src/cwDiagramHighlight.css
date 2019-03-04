@@ -1,3 +1,7 @@
+.cw-diagram-search-container {
+  overflow: hidden;
+}
+
 .cw-diagram-options-li {
     display: inline-flex;
     width : 100%;
