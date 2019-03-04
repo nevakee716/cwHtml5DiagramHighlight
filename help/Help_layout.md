@@ -1,9 +1,10 @@
 | **Name** | **Html5DiagramHighlight** | **Version** | 
 | --- | --- | --- |
-| **Updated by** | Mathias PFAUWADEL | 1.4 | 
+| **Updated by** | Mathias PFAUWADEL | 1.5 | 
 
 ## Patch Notes
 
+* 1.5 : Improve graphic to fit with evolve
 * 1.4 : Add possiblity to highlight with different color according to the step 
 * 1.3 : Correct wrong arrow association direction
 * 1.2 : Option for width

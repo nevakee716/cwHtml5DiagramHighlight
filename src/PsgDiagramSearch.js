@@ -286,14 +286,16 @@
           var step;
 
           output.push('<li class="cw-diagram-options-li" >');
-          output.push('Date : <input id="', diagramViewer.id,'_',selectedOt,'_date" type="date">');
+          output.push('<span class="diagramSearchHeader">Date : </span><input id="', diagramViewer.id,'_',selectedOt,'_date" type="date">');
           output.push('</li>');
+          output.push('<li class="" >');
           for (var s in that.config[selectedOt + "_date"]) {
             if(that.config[selectedOt + "_date"].hasOwnProperty(s)) {
               step = that.config[selectedOt + "_date"][s];
               output.push('<div><i class="fa fa-square-o" style="color:',step.color,'" aria-hidden="true"></i>',' : ',step.name,'</div>');
             }
           }
+          output.push('</li>');
           
         }
 
