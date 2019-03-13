@@ -187,46 +187,49 @@
   };
 
   PsgDiagramSearch.prototype.createSearchBox = function(diagramViewer) {
-    var searchBox,
-      o,
-      that = this;
-    searchBox = diagramViewer.$breadcrumb.find(".cw-diagram-searchBox");
-    if (searchBox.length > 0) {
-      searchBox.unbind("click");
-    } else {
-      var filterContainer = document.createElement("a");
-      filterContainer.className = "cw-diagram-searchBox-Container bootstrap-iso";
+    if (!diagramViewer.isImageDiagram()) {
+      var searchBox,
+        o,
+        that = this;
+      searchBox = diagramViewer.$breadcrumb.find(".cw-diagram-searchBox");
+      if (searchBox.length > 0) {
+        searchBox.remove();
+      } 
 
-      var filterObject;
-      var option, optgroup;
+        var filterContainer = document.createElement("a");
+        filterContainer.className = "cw-diagram-searchBox-Container bootstrap-iso";
 
-      filterObject = document.createElement("select");
-      filterObject.setAttribute("title", '<i style="color : black" class="fa fa-search" aria-hidden="true"></i> ' + $.i18n.prop("focus_on"));
-      filterObject.setAttribute("data-selected-text-format", "static");
-      filterObject.setAttribute("data-size", "10");
-      filterObject.setAttribute("data-live-search", "true");
-      filterObject.setAttribute("data-selected-text-format", "static");
-      filterObject.setAttribute("data-width", "300px");
+        var filterObject;
+        var option, optgroup;
 
-      filterObject.className = "cw-diagram-searchBox";
-      filterContainer.appendChild(filterObject);
-      this.getShapeForSearchBox(diagramViewer, filterObject);
-      diagramViewer.$breadcrumb.find(".cwDiagramBreadcrumbZoneRight").prepend(filterContainer);
+        filterObject = document.createElement("select");
+        filterObject.setAttribute("title", '<i style="color : black" class="fa fa-search" aria-hidden="true"></i> ' + $.i18n.prop("focus_on"));
+        filterObject.setAttribute("data-selected-text-format", "static");
+        filterObject.setAttribute("data-size", "10");
+        filterObject.setAttribute("data-live-search", "true");
+        filterObject.setAttribute("data-selected-text-format", "static");
+        filterObject.setAttribute("data-width", "300px");
 
-      var self = this;
-      if (cwAPI.isDebugMode() === true) {
-        self.pushSearchBox(diagramViewer);
-      } else {
-        let libToLoad = ["modules/bootstrap/bootstrap.min.js", "modules/bootstrap-select/bootstrap-select.min.js"];
-        // AsyncLoad
-        cwApi.customLibs.aSyncLayoutLoader.loadUrls(libToLoad, function(error) {
-          if (error === null) {
-            self.pushSearchBox(diagramViewer);
-          } else {
-            cwAPI.Log.Error(error);
-          }
-        });
-      }
+        filterObject.className = "cw-diagram-searchBox";
+        filterContainer.appendChild(filterObject);
+        this.getShapeForSearchBox(diagramViewer, filterObject);
+        diagramViewer.$breadcrumb.find(".cwDiagramBreadcrumbZoneRight").prepend(filterContainer);
+
+        var self = this;
+        if (cwAPI.isDebugMode() === true) {
+          self.pushSearchBox(diagramViewer);
+        } else {
+          let libToLoad = ["modules/bootstrap/bootstrap.min.js", "modules/bootstrap-select/bootstrap-select.min.js"];
+          // AsyncLoad
+          cwApi.customLibs.aSyncLayoutLoader.loadUrls(libToLoad, function(error) {
+            if (error === null) {
+              self.pushSearchBox(diagramViewer);
+            } else {
+              cwAPI.Log.Error(error);
+            }
+          });
+        }
+      
     }
   };
   PsgDiagramSearch.prototype.pushSearchBox = function(diagramViewer) {
