@@ -8,7 +8,7 @@
   PsgDiagramSearch = function(diagramViewer) {
     this.globalAlpha = 0.2;
     this.connectorObject = ["CONNECTORSET", "EVENTRESULT"];
-    this.highlightColor = "red";
+    this.highlightColor = getComputedStyle(document.querySelector("div.cwDiagramBreadcrumb")).backgroundColor;
     this.title1 = "Search";
     this.title2 = diagramViewer.json.properties.type;
     this.width = 5;
@@ -143,11 +143,11 @@
   PsgDiagramSearch.prototype.manageGPS = function(diagramViewer) {
     var t = 0,
       self = this;
-    this.selectedShapeId = null;
+    this.selectedShape = null;
     Object.keys(this.highlightShape).forEach(function(s) {
       if (self.highlightShape[s] >= 2) {
         t = t + 1;
-        self.selectedShapeId = s;
+        self.selectedShape = s;
       }
     });
     if (t === 1 && this.gpsButton === false) {
@@ -172,8 +172,8 @@
     var self = this;
     if (b) {
       b.addEventListener("click", function(e) {
-        if (self.selectedShapeId != null) {
-          let shape = diagramViewer.diagramShapesById[self.selectedShapeId].shape;
+        if (self.selectedShape != null) {
+          let shape = diagramViewer.diagramShapesBySequence[self.selectedShape].shape;
           diagramViewer.centerShapeOnCanvas(shape);
           self.updateOverwiew = true;
           /*let point = new cwApi.CwPoint();
@@ -247,7 +247,7 @@
         diagramViewer.centerShapeOnCanvas(shape);
         self.updateOverwiew = true;
       }
-      $(this).selectpicker("val", "");
+      //$(this).selectpicker("val", "");
     });
   };
 
@@ -479,7 +479,7 @@
 
   PsgDiagramSearch.prototype.setGlobalAlphaShape = function(diagramViewer, shape) {
     if (!cwApi.isUndefinedOrNull(shape) && !cwApi.isUndefinedOrNull(shape.shape) && !cwApi.isUndefinedOrNull(shape.shape.cwObject)) {
-      if (!cwApi.isUndefined(this.searchParameters) && this.searchParameters.search === true && this.searchParameters.objectTypeScriptName === shape.shape.cwObject.objectTypeScriptName && this.highlightShape[shape.shape.Id] < 2) {
+      if (!cwApi.isUndefined(this.searchParameters) && this.searchParameters.search === true && this.searchParameters.objectTypeScriptName === shape.shape.cwObject.objectTypeScriptName && this.highlightShape[shape.shape.Sequence] < 2) {
         diagramViewer.ctx.globalAlpha = this.globalAlpha;
       } else {
         diagramViewer.ctx.globalAlpha = 1;
@@ -513,29 +513,29 @@
           return;
         }
       }
-      this.highlightShape[shape.shape.Id] = 0;
+      this.highlightShape[shape.shape.Sequence] = 0;
     }
   };
 
   PsgDiagramSearch.prototype.isShapeNeedToBeHighlight = function(shape) {
-    if (shape.hasOwnProperty("shape") && this.highlightConnectorObject.hasOwnProperty(shape.shape.Id)) {
+    if (shape.hasOwnProperty("shape") && this.highlightConnectorObject.hasOwnProperty(shape.shape.Sequence)) {
       // Check if it's a connectorSet
-      if (this.highlightConnectorObject[shape.shape.Id].before && this.highlightConnectorObject[shape.shape.Id].after) {
+      if (this.highlightConnectorObject[shape.shape.Sequence].before && this.highlightConnectorObject[shape.shape.Sequence].after) {
         // Check if it should be highlight
-        this.highlightShape[shape.shape.Id] = 2;
-        this.highlightConnectorObject[shape.shape.Id].before = false;
-        this.highlightConnectorObject[shape.shape.Id].after = false;
+        this.highlightShape[shape.shape.Sequence] = 2;
+        this.highlightConnectorObject[shape.shape.Sequence].before = false;
+        this.highlightConnectorObject[shape.shape.Sequence].after = false;
         return true;
       }
       // if it's connector init it
     } else if (shape.hasOwnProperty("shape") && this.connectorObject.indexOf(shape.shape.cwObject.objectTypeScriptName.toUpperCase()) !== -1) {
-      this.highlightConnectorObject[shape.shape.Id] = {};
-      this.highlightConnectorObject[shape.shape.Id].before = false;
-      this.highlightConnectorObject[shape.shape.Id].after = false;
+      this.highlightConnectorObject[shape.shape.Sequence] = {};
+      this.highlightConnectorObject[shape.shape.Sequence].before = false;
+      this.highlightConnectorObject[shape.shape.Sequence].after = false;
     }
     if (this.matchSearchCriteria(shape.shape.cwObject)) {
       // if regular shape, check if it should be highlight
-      this.highlightShape[shape.shape.Id] = 2;
+      this.highlightShape[shape.shape.Sequence] = 2;
       return true;
     }
     return false;
