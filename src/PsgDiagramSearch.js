@@ -6,9 +6,17 @@
   var PsgDiagramSearch;
 
   PsgDiagramSearch = function(diagramViewer) {
+    function hex(x) {
+      return ("0" + parseInt(x).toString(16)).slice(-2);
+    }
+    function rgb2hex(rgb) {
+      rgb = rgb.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(,\s*\d+\.*\d+)?\)$/);
+      return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
+    }
+
     this.globalAlpha = 0.2;
     this.connectorObject = ["CONNECTORSET", "EVENTRESULT"];
-    this.highlightColor = getComputedStyle(document.querySelector("div.cwDiagramBreadcrumb")).backgroundColor;
+    this.highlightColor = rgb2hex(getComputedStyle(document.querySelector("div.cwDiagramBreadcrumb")).backgroundColor);
     this.title1 = "Search";
     this.title2 = diagramViewer.json.properties.type;
     this.width = 5;
@@ -176,11 +184,7 @@
           let shape = diagramViewer.diagramShapesBySequence[self.selectedShape].shape;
           diagramViewer.centerShapeOnCanvas(shape);
           self.updateOverwiew = true;
-          /*let point = new cwApi.CwPoint();
-          point.x = shape.X + shape.W / 2;
-          point.y = shape.Y + shape.H / 2;
-          let scale = Math.max(Math.min(Math.max(shape.H, shape.W) * 0.004, 1), 0.1);
-          diagramViewer.camera.focusOnPoint(point, scale);*/
+
         }
       });
     }
@@ -194,42 +198,41 @@
       searchBox = diagramViewer.$breadcrumb.find(".cw-diagram-searchBox");
       if (searchBox.length > 0) {
         searchBox.remove();
-      } 
+      }
 
-        var filterContainer = document.createElement("a");
-        filterContainer.className = "cw-diagram-searchBox-Container bootstrap-iso";
+      var filterContainer = document.createElement("a");
+      filterContainer.className = "cw-diagram-searchBox-Container bootstrap-iso";
 
-        var filterObject;
-        var option, optgroup;
+      var filterObject;
+      var option, optgroup;
 
-        filterObject = document.createElement("select");
-        filterObject.setAttribute("title", '<i style="color : black" class="fa fa-search" aria-hidden="true"></i> ' + $.i18n.prop("focus_on"));
-        filterObject.setAttribute("data-selected-text-format", "static");
-        filterObject.setAttribute("data-size", "10");
-        filterObject.setAttribute("data-live-search", "true");
-        filterObject.setAttribute("data-selected-text-format", "static");
-        filterObject.setAttribute("data-width", "300px");
+      filterObject = document.createElement("select");
+      filterObject.setAttribute("title", '<i style="color : black" class="fa fa-search" aria-hidden="true"></i> ' + $.i18n.prop("focus_on"));
+      filterObject.setAttribute("data-selected-text-format", "static");
+      filterObject.setAttribute("data-size", "10");
+      filterObject.setAttribute("data-live-search", "true");
+      filterObject.setAttribute("data-selected-text-format", "static");
+      filterObject.setAttribute("data-width", "300px");
 
-        filterObject.className = "cw-diagram-searchBox";
-        filterContainer.appendChild(filterObject);
-        this.getShapeForSearchBox(diagramViewer, filterObject);
-        diagramViewer.$breadcrumb.find(".cwDiagramBreadcrumbZoneRight").prepend(filterContainer);
+      filterObject.className = "cw-diagram-searchBox";
+      filterContainer.appendChild(filterObject);
+      this.getShapeForSearchBox(diagramViewer, filterObject);
+      diagramViewer.$breadcrumb.find(".cwDiagramBreadcrumbZoneRight").prepend(filterContainer);
 
-        var self = this;
-        if (cwAPI.isDebugMode() === true) {
-          self.pushSearchBox(diagramViewer);
-        } else {
-          let libToLoad = ["modules/bootstrap/bootstrap.min.js", "modules/bootstrap-select/bootstrap-select.min.js"];
-          // AsyncLoad
-          cwApi.customLibs.aSyncLayoutLoader.loadUrls(libToLoad, function(error) {
-            if (error === null) {
-              self.pushSearchBox(diagramViewer);
-            } else {
-              cwAPI.Log.Error(error);
-            }
-          });
-        }
-      
+      var self = this;
+      if (cwAPI.isDebugMode() === true) {
+        self.pushSearchBox(diagramViewer);
+      } else {
+        let libToLoad = ["modules/bootstrap/bootstrap.min.js", "modules/bootstrap-select/bootstrap-select.min.js"];
+        // AsyncLoad
+        cwApi.customLibs.aSyncLayoutLoader.loadUrls(libToLoad, function(error) {
+          if (error === null) {
+            self.pushSearchBox(diagramViewer);
+          } else {
+            cwAPI.Log.Error(error);
+          }
+        });
+      }
     }
   };
   PsgDiagramSearch.prototype.pushSearchBox = function(diagramViewer) {
