@@ -242,7 +242,7 @@
       var groupArray = {};
       if (clickedIndex !== undefined && $(this).context.hasOwnProperty(clickedIndex)) {
         id = $(this).context[clickedIndex]["id"];
-        let shape = diagramViewer.diagramShapesById[id].shape;
+        let shape = diagramViewer.diagramShapesBySequence[id].shape;
 
         diagramViewer.centerShapeOnCanvas(shape);
         self.updateOverwiew = true;
@@ -267,7 +267,7 @@
       g.setAttribute("label", cwAPI.mm.getObjectType(otScriptName).name);
       shapes.forEach(function(s) {
         let object = document.createElement("option");
-        object.setAttribute("id", s.shape.Id);
+        object.setAttribute("id", s.shape.Sequence);
         object.textContent = s.shape.cwObject.name;
         g.appendChild(object);
       });
