@@ -184,7 +184,11 @@
           let shape = diagramViewer.diagramShapesBySequence[self.selectedShape].shape;
           diagramViewer.centerShapeOnCanvas(shape);
           self.updateOverwiew = true;
-
+          /*let point = new cwApi.CwPoint();
+          point.x = shape.X + shape.W / 2;
+          point.y = shape.Y + shape.H / 2;
+          let scale = Math.max(Math.min(Math.max(shape.H, shape.W) * 0.004, 1), 0.1);
+          diagramViewer.camera.focusOnPoint(point, scale);*/
         }
       });
     }
