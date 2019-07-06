@@ -260,13 +260,66 @@
 
   PsgDiagramSearch.prototype.getShapeForSearchBox = function(diagramViewer, filterObject) {
     var shapeByObjectType = {};
+    let shapes = [];
+
     diagramViewer.diagramShapes.forEach(function(s) {
       let o = s.shape.cwObject;
+
       if (o && o.objectTypeScriptName !== "freetextobject" && o.objectTypeScriptName !== "connectorset") {
         if (shapeByObjectType[o.objectTypeScriptName] === undefined) shapeByObjectType[o.objectTypeScriptName] = [];
         shapeByObjectType[o.objectTypeScriptName].push(s);
+        shapes.push(s);
       }
     });
+    let dupeIds = [];
+    for (let ot in shapeByObjectType) {
+      if (shapeByObjectType.hasOwnProperty(ot)) {
+        let shapes = shapeByObjectType[ot];
+        let dupesObjectIds = [];
+        let ids = [];
+        shapes.forEach(function(s) {
+          if (ids.indexOf(s.shape.cwObject.object_id) === -1) {
+            ids.push(s.shape.cwObject.object_id);
+          } else dupesObjectIds.push(s.shape.cwObject.object_id);
+        });
+        shapes.forEach(function(s) {
+          if (dupesObjectIds.indexOf(s.shape.cwObject.object_id) !== -1) {
+            dupeIds.push(s.shape.Sequence);
+          } 
+        });
+      }
+    }
+
+    shapes.sort(function(a, b) {
+      return a.shape.W * a.shape.H - b.shape.W * b.shape.H;
+    });
+
+    shapes.forEach(function(s) {
+      if (dupeIds.indexOf(s.shape.Sequence) !== -1) {
+        shapes.forEach(function(sp) {
+          if (s.shape.Sequence !== sp.shape.Sequence) {
+            if (sp.parent === undefined && sp.shape.X + sp.shape.W > s.shape.X + s.shape.W && sp.shape.X < s.shape.X && sp.shape.Y + sp.shape.H > s.shape.Y + s.shape.H && sp.shape.Y < s.shape.Y) {
+              if (s.parent === undefined) s.parent = sp;
+              else if (sp.shape.W * sp.shape.H < s.parent.shape.W * s.parent.shape.H) s.parent = sp;
+            }
+          }
+        });
+      }
+    });
+
+    shapes.forEach(function(s) {
+      if (s.parent) s.shape.cwObject.name += " (" + s.parent.shape.cwObject.name + ")";
+    });
+
+    for (let ot in shapeByObjectType) {
+      if (shapeByObjectType.hasOwnProperty(ot)) {
+        let shapes = shapeByObjectType[ot];
+
+        shapes.sort(function(a, b) {
+          return a.shape.cwObject.name.localeCompare(b.shape.cwObject.name);
+        });
+      }
+    }
 
     Object.keys(shapeByObjectType).forEach(function(otScriptName) {
       var shapes = shapeByObjectType[otScriptName];
