@@ -285,7 +285,7 @@
         shapes.forEach(function(s) {
           if (dupesObjectIds.indexOf(s.shape.cwObject.object_id) !== -1) {
             dupeIds.push(s.shape.Sequence);
-          } 
+          }
         });
       }
     }
@@ -445,12 +445,12 @@
           lookups = [
             {
               id: "false",
-              name: that.falseString
+              name: that.falseString,
             },
             {
               id: "true",
-              name: that.trueString
-            }
+              name: that.trueString,
+            },
           ];
           displayLookup(o, property, lookups);
           break;
@@ -763,7 +763,7 @@
           b = false;
           for (atScriptName in item.associations) {
             if (item.associations.hasOwnProperty(atScriptName)) {
-              if (atScriptName.indexOf(at) !== 1) {
+              if (atScriptName.indexOf(at.toLowerCase()) !== -1) {
                 for (i = 0; i < item.associations[atScriptName].length; i += 1) {
                   if (item.associations[atScriptName][i].object_id == this.searchParameters.associations[at]) {
                     b = true;
